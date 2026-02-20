@@ -10,9 +10,9 @@ const EXAMPLE_QUERIES = [
   "Drug interactions between cannabis and SSRIs",
 ];
 
-// Simulated response for the public demo
+// Simulated responses for the public demo — one per example query
 const DEMO_RESPONSES: Record<string, object> = {
-  default: {
+  "What does the evidence say about CBD for anxiety?": {
     query: "What does the evidence say about CBD for anxiety?",
     namespace: "cannabis",
     results: [
@@ -61,9 +61,167 @@ const DEMO_RESPONSES: Record<string, object> = {
     ],
     meta: {
       response_time_ms: 142,
-      records_searched: 792,
       namespace: "cannabis",
       evidence_grades: { A: 2, B: 1 },
+    },
+  },
+  "THC:CBD ratios for chronic pain management": {
+    query: "THC:CBD ratios for chronic pain management",
+    namespace: "cannabis",
+    results: [
+      {
+        score: 0.96,
+        id: "thc_cbd_ratio_pain_001",
+        metadata: {
+          topic: "THC:CBD Ratio Optimisation for Chronic Pain",
+          finding:
+            "1:1 THC:CBD ratios demonstrate superior analgesic efficacy compared to THC-dominant preparations, with reduced psychoactive side effects",
+          evidence_grade: "Level A",
+          authority_score: 9,
+          clinical_relevance:
+            "Nabiximols (1:1 THC:CBD) approved in multiple jurisdictions for MS-related spasticity and pain. Starting dose: 1 spray/day, titrate to max 12 sprays/day.",
+          sources: "Russo & Guy 2006; Aviram & Samuelly-Leichtag 2017; Ueberall et al. 2019",
+        },
+      },
+      {
+        score: 0.91,
+        id: "thc_cbd_ratio_pain_002",
+        metadata: {
+          topic: "CBD Modulation of THC Side Effects in Pain",
+          finding:
+            "CBD at ratios of 1:1 or higher relative to THC significantly reduces THC-induced anxiety, tachycardia and cognitive impairment while preserving analgesia",
+          evidence_grade: "Level A",
+          authority_score: 8,
+          clinical_relevance:
+            "Patients with low THC tolerance benefit from higher CBD ratios (e.g. 2:1 CBD:THC). Neuropathic pain may respond better to balanced ratios.",
+          sources: "Bonn-Miller et al. 2017; MacCallum & Russo 2018",
+        },
+      },
+      {
+        score: 0.85,
+        id: "thc_cbd_ratio_pain_003",
+        metadata: {
+          topic: "High-THC vs Balanced Ratios in Nociceptive Pain",
+          finding:
+            "THC-dominant formulations (>20:1) show efficacy for nociceptive pain but carry higher adverse event profiles compared to balanced preparations",
+          evidence_grade: "Level B",
+          authority_score: 7,
+          clinical_relevance:
+            "Consider patient history, pain type (nociceptive vs neuropathic) and prior cannabis experience when selecting ratio. Titrate slowly.",
+          sources: "Boehnke et al. 2021; Sihota et al. 2020",
+        },
+      },
+    ],
+    meta: {
+      response_time_ms: 128,
+      namespace: "cannabis",
+      evidence_grades: { A: 2, B: 1 },
+    },
+  },
+  "Terpene profiles associated with anti-inflammatory effects": {
+    query: "Terpene profiles associated with anti-inflammatory effects",
+    namespace: "cannabis",
+    results: [
+      {
+        score: 0.93,
+        id: "terpene_antiinflam_001",
+        metadata: {
+          topic: "β-Caryophyllene: CB2 Receptor Agonist Terpene",
+          finding:
+            "β-caryophyllene is the only terpene known to directly activate CB2 receptors, producing significant anti-inflammatory and analgesic effects without psychoactivity",
+          evidence_grade: "Level A",
+          authority_score: 9,
+          clinical_relevance:
+            "Found in high concentrations in strains such as GSC and OG Kush. Synergistic with CBD for inflammatory conditions. Threshold concentration: >0.05% for therapeutic relevance.",
+          sources: "Gertsch et al. 2008; Fidyt et al. 2016; Scandiffio et al. 2020",
+        },
+      },
+      {
+        score: 0.88,
+        id: "terpene_antiinflam_002",
+        metadata: {
+          topic: "Myrcene and α-Pinene Anti-Inflammatory Mechanisms",
+          finding:
+            "Myrcene demonstrates anti-inflammatory activity via prostaglandin E2 inhibition, while α-pinene inhibits NF-κB pathway activation",
+          evidence_grade: "Level B",
+          authority_score: 7,
+          clinical_relevance:
+            "Myrcene-dominant strains may enhance the entourage effect for inflammatory conditions. α-pinene also acts as a bronchodilator, relevant for respiratory inflammation.",
+          sources: "Rufino et al. 2015; Kim et al. 2015; Russo 2011",
+        },
+      },
+      {
+        score: 0.81,
+        id: "terpene_antiinflam_003",
+        metadata: {
+          topic: "Limonene in Inflammatory and Mood Disorders",
+          finding:
+            "Limonene shows dual anti-inflammatory and anxiolytic properties, reducing pro-inflammatory cytokines IL-1β and TNF-α in preclinical models",
+          evidence_grade: "Level B",
+          authority_score: 7,
+          clinical_relevance:
+            "May reduce THC-induced anxiety while contributing anti-inflammatory benefits. Commonly found alongside myrcene in citrus-forward cultivars.",
+          sources: "d'Alessio et al. 2013; Piccinelli et al. 2015; Russo & Marcu 2017",
+        },
+      },
+    ],
+    meta: {
+      response_time_ms: 156,
+      namespace: "cannabis",
+      evidence_grades: { A: 1, B: 2 },
+    },
+  },
+  "Drug interactions between cannabis and SSRIs": {
+    query: "Drug interactions between cannabis and SSRIs",
+    namespace: "cannabis",
+    results: [
+      {
+        score: 0.95,
+        id: "drug_interaction_ssri_001",
+        metadata: {
+          topic: "Cannabis–SSRI Pharmacokinetic Interactions",
+          finding:
+            "CBD is a potent inhibitor of CYP2D6 and CYP3A4 enzymes, which metabolise several SSRIs including fluoxetine, paroxetine and sertraline, potentially increasing SSRI plasma concentrations",
+          evidence_grade: "Level B",
+          authority_score: 9,
+          clinical_relevance:
+            "Clinicians should monitor for increased SSRI side effects (serotonergic symptoms, bleeding risk) when patients co-administer CBD. Dose adjustment may be required.",
+          sources: "Nasrin et al. 2021; Stout & Cimino 2014; Bansal et al. 2020",
+        },
+      },
+      {
+        score: 0.90,
+        id: "drug_interaction_ssri_002",
+        metadata: {
+          topic: "Serotonin Syndrome Risk with Cannabis and SSRIs",
+          finding:
+            "Theoretical risk of serotonin syndrome exists due to CBD agonism at 5-HT1A receptors combined with SSRI serotonin reuptake inhibition, though confirmed clinical cases remain rare",
+          evidence_grade: "Level C",
+          authority_score: 8,
+          clinical_relevance:
+            "Risk is primarily theoretical but warrants monitoring. Symptoms to watch: agitation, hyperthermia, tachycardia, myoclonus. Higher risk with high-dose CBD (>200mg/day).",
+          sources: "Anderson & Chan 2016; Grayson et al. 2018; WHO Expert Committee 2018",
+        },
+      },
+      {
+        score: 0.84,
+        id: "drug_interaction_ssri_003",
+        metadata: {
+          topic: "THC and SSRI Pharmacodynamic Interactions",
+          finding:
+            "THC may both potentiate and counteract SSRI effects through endocannabinoid system modulation of serotonergic tone, with bidirectional effects depending on dose and individual variation",
+          evidence_grade: "Level C",
+          authority_score: 7,
+          clinical_relevance:
+            "Low-dose THC may complement SSRI anxiolytic effects, but high-dose THC can exacerbate anxiety in SSRI patients. Start low, go slow. Inform prescribing clinician.",
+          sources: "Bambico et al. 2007; Hill & Gorzalka 2005; Lowe et al. 2019",
+        },
+      },
+    ],
+    meta: {
+      response_time_ms: 134,
+      namespace: "cannabis",
+      evidence_grades: { B: 1, C: 2 },
     },
   },
 };
@@ -82,7 +240,11 @@ export function DemoSection() {
 
     await new Promise((r) => setTimeout(r, 1200 + Math.random() * 800));
 
-    setResponse(DEMO_RESPONSES.default);
+    // Match by index first (for button clicks), then try exact key match, then fallback
+    const exampleIndex = EXAMPLE_QUERIES.indexOf(searchQuery);
+    const matchedKey = exampleIndex !== -1 ? EXAMPLE_QUERIES[exampleIndex] : searchQuery;
+    const keys = Object.keys(DEMO_RESPONSES);
+    setResponse(DEMO_RESPONSES[matchedKey] || DEMO_RESPONSES[keys[0]]);
     setLoading(false);
   };
 
@@ -163,7 +325,7 @@ export function DemoSection() {
               <div className="flex items-center justify-center h-[400px]">
                 <div className="text-center">
                   <Loader2 size={24} className="text-accent animate-spin mx-auto mb-3" />
-                  <p className="text-white/40 text-sm">Searching 792 cannabis records...</p>
+                  <p className="text-white/40 text-sm">Searching cannabis knowledge base...</p>
                 </div>
               </div>
             )}

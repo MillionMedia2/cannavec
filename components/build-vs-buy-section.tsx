@@ -67,7 +67,7 @@ export function BuildVsBuySection() {
 
             <div className="space-y-4 mb-8">
               {[
-                { label: "1,601 verified records, immediately", included: true },
+                { label: "Thousands of verified records, immediately", included: true },
                 { label: "Editorial governance by named experts", included: true },
                 { label: "Evidence grading (A/B/C) on every record", included: true },
                 { label: "RAG-optimised for AI integration", included: true },

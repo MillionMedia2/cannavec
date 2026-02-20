@@ -12,7 +12,7 @@ export default function DocsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl sm:text-5xl font-display text-cannavec-900 mb-4">API Documentation</h1>
           <p className="text-lg text-warm-500 max-w-2xl">
-            Everything you need to integrate Cannavec into your platform. RESTful JSON API with semantic search across 1,601 verified cannabis records.
+            Everything you need to integrate Cannavec into your platform. RESTful JSON API with semantic search across thousands of verified cannabis records.
           </p>
         </div>
       </section>
@@ -75,7 +75,6 @@ Content-Type: application/json`}</pre>
   ],
   "meta": {
     "response_time_ms": 142,
-    "records_searched": 792,
     "namespace": "cannabis"
   }
 }`}</pre>
@@ -87,12 +86,12 @@ Content-Type: application/json`}</pre>
             <div className="space-y-4">
               <div className="p-5 bg-white rounded-xl border border-warm-200">
                 <code className="px-2 py-1 bg-cannavec-50 text-cannavec-700 text-xs font-mono rounded">cannabis</code>
-                <span className="text-xs text-warm-400 ml-2">792 records</span>
+                <span className="text-xs text-warm-400 ml-2">hundreds of records</span>
                 <p className="text-sm text-warm-500 mt-2">Core cannabis science: mechanisms, clinical evidence, dosing, drug interactions, safety, regulation.</p>
               </div>
               <div className="p-5 bg-white rounded-xl border border-warm-200">
                 <code className="px-2 py-1 bg-cannavec-50 text-cannavec-700 text-xs font-mono rounded">cannabis_products</code>
-                <span className="text-xs text-warm-400 ml-2">809 records</span>
+                <span className="text-xs text-warm-400 ml-2">hundreds of records</span>
                 <p className="text-sm text-warm-500 mt-2">UK/EU cannabis products: formulations, terpene profiles, cannabinoid content, consumption methods.</p>
               </div>
             </div>

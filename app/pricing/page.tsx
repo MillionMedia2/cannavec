@@ -169,8 +169,8 @@ export default function PricingPage() {
           <h2 className="text-2xl font-display text-cannavec-900 mb-8">Every tier includes</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { title: "792 Cannabis Records", desc: "Clinical evidence, mechanisms, dosing, safety data" },
-              { title: "809 Product Records", desc: "UK/EU cannabis products with verified data" },
+              { title: "Hundreds of Cannabis Records", desc: "Clinical evidence, mechanisms, dosing, safety data" },
+              { title: "Hundreds of Product Records", desc: "UK/EU cannabis products with verified data" },
               { title: "Evidence Grading", desc: "Every record graded Level A, B, or C" },
               { title: "Full Citations", desc: "Source, date, and study type on every claim" },
             ].map((item, i) => (

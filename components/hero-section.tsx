@@ -36,7 +36,7 @@ export function HeroSection() {
           <p className="text-lg sm:text-xl text-white/80 font-body leading-relaxed mb-10 max-w-2xl">
             The Cannabis Knowledge Foundation API delivers editorially governed,
             evidence-graded cannabis science — ready for your platform, clinic
-            or research pipeline. 1,601 verified records. Zero hallucination risk.
+            or research pipeline. Thousands of verified records. Zero hallucination risk.
           </p>
 
           <div className="flex flex-col sm:flex-row items-start gap-4 mb-16">
@@ -55,7 +55,7 @@ export function HeroSection() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
               { icon: Shield, label: "Editorially Governed", desc: "Named experts. Evidence graded A/B/C." },
-              { icon: BookOpen, label: "1,601 Verified Records", desc: "Cannabis science + product data." },
+              { icon: BookOpen, label: "Thousands of Verified Records", desc: "Cannabis science + product data." },
               { icon: Zap, label: "RAG-Optimised", desc: "Built for AI retrieval. Not scraped." },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">

@@ -1,5 +1,7 @@
 # Cannavec.ai — Project Context for Cursor
 
+> **Last updated:** 2026-02-18
+
 ## What This Is
 
 **Cannavec.ai** is the commercial API service for the **Cannabis Knowledge Foundation (CKF)** — an editorially governed, evidence-based cannabis knowledge base. It provides verified cannabis science via API to clinics, tech platforms, brands and researchers.
@@ -13,7 +15,7 @@
 - **Framework:** Next.js 14 (App Router)
 - **UI:** Tailwind CSS + custom components (DM Serif Display / DM Sans fonts)
 - **Payments:** Stripe (keys in .env.local)
-- **Knowledge Base:** Pinecone vector store (index: `plantz1`, namespaces: `cannabis` 792 records, `cannabis_products` 809 records)
+- **Knowledge Base:** Pinecone vector store (index: `plantz1`, namespaces: `cannabis` (hundreds of records, growing), `cannabis_products` (hundreds of records, growing))
 - **Hosting:** Vercel (deploy from this repo)
 - **Domain:** cannavec.ai
 
@@ -105,9 +107,16 @@ The search API route (`app/api/v1/search/route.ts`) is the core backend:
 - **Vercel** — hosting and deployment
 - **Plantz.io** — parent WordPress site
 
+## Change Log
+
+### 2026-02-18
+- **Fixed:** Demo section example query buttons now correctly return distinct responses per query (was falling back to first query response for all buttons due to key matching issue)
+- **Changed:** Replaced all hardcoded record counts (792, 809, 1,601) across the site with generic descriptions ("hundreds of", "thousands of") to prevent the site dating as the knowledge base grows. Affected files: hero-section.tsx, build-vs-buy-section.tsx, demo/page.tsx, docs/page.tsx, pricing/page.tsx
+- **Changed:** Removed `records_searched` field from API docs example response to avoid hardcoded numbers
+
 ## Important Notes
 
-- The `herb_monographs` namespace (6,685 records) is NOT part of Cannavec — it's a separate Plantz product
+- The `herb_monographs` namespace (thousands of records) is NOT part of Cannavec — it's a separate Plantz product
 - All content uses compliance-safe language ("research suggests", "may support")
 - Evidence grading: Level A (RCTs), Level B (observational), Level C (expert opinion)
 - Constitutional principle: no commercial influence on knowledge content
