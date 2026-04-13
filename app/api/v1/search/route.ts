@@ -23,8 +23,10 @@ export async function POST(request: NextRequest) {
     const apiKey = authHeader.replace("Bearer ", "");
 
     // TODO: Validate API key against database
-    // For now, accept any non-empty key (replace with Stripe/DB lookup)
-    if (!apiKey || apiKey.length < 10) {
+    // demo_public_key is accepted for the public demo (rate-limited client-side)
+    // All other keys require a minimum length; replace with Stripe/DB lookup in production
+    const isDemoKey = apiKey === "demo_public_key";
+    if (!isDemoKey && (!apiKey || apiKey.length < 10)) {
       return NextResponse.json(
         { error: "Invalid API key" },
         { status: 401 }

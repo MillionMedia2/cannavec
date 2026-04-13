@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Pricing — Cannavec API",
-  description: "API pricing from £750/month for startups to £10,000/month for enterprise. Evidence-based cannabis knowledge at every scale.",
+  description: "API pricing from £750/month for startups to enterprise. Evidence-based cannabis knowledge at every scale.",
 };
 
 const tiers = [
@@ -66,9 +66,9 @@ const tiers = [
   {
     name: "Enterprise",
     icon: Building2,
-    price: "£10,000",
-    period: "/month",
-    description: "For MSOs, pharma, tech platforms and large clinic networks.",
+    price: "Contact Us",
+    period: "",
+    description: "For MSOs, pharma, tech platforms and large clinic networks. Custom pricing to fit your scale.",
     features: [
       "Unlimited API calls",
       "Priority support + SLA",
@@ -96,7 +96,7 @@ export default function PricingPage() {
               Simple, transparent pricing.
             </h1>
             <p className="text-lg text-warm-500">
-              From advocacy groups at £10/month to enterprise at £10,000/month.
+              From advocacy groups at £10/month to full enterprise.
               Every tier gets the same verified knowledge — just more of it.
             </p>
           </div>

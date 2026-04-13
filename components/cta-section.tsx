@@ -15,7 +15,7 @@ export function CTASection() {
         </h2>
         <p className="text-lg text-white/70 mb-10 max-w-2xl mx-auto">
           Join the first wave of companies building on the Cannabis Knowledge
-          Foundation. From £750/month for startups to full enterprise access.
+          Foundation. From £750/month for startups, with enterprise plans available on request.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -32,7 +32,7 @@ export function CTASection() {
         </div>
 
         <p className="text-sm text-white/40 mt-8">
-          Launching at Cannabis Europa Paris · February 19, 2026
+          Meet us at ICBC, Berlin · April 2026
         </p>
       </div>
     </section>

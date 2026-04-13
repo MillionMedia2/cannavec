@@ -51,13 +51,13 @@ export default function ContactPage() {
 
               <div className="mt-8 p-6 bg-cannavec-50 rounded-xl border border-cannavec-100">
                 <h3 className="text-base font-display text-cannavec-900 mb-2">
-                  Meeting at Cannabis Europa?
+                  Meeting us at ICBC Berlin?
                 </h3>
                 <p className="text-sm text-warm-500 mb-4">
-                  We&apos;ll be at Cannabis Europa Paris on February 19, 2026. Drop us a line to arrange a meeting at the event.
+                  We&apos;ll be at ICBC Berlin in April 2026. Drop us a line to arrange a meeting at the event.
                 </p>
                 <a
-                  href="mailto:hello@cannavec.ai?subject=Cannabis%20Europa%20Meeting"
+                  href="mailto:hello@cannavec.ai?subject=ICBC%20Berlin%20Meeting"
                   className="cannavec-btn-primary text-sm"
                 >
                   Book a Meeting
@@ -71,7 +71,7 @@ export default function ContactPage() {
               <div className="space-y-4">
                 {[
                   { title: "Try the API", desc: "See what the knowledge base returns with our interactive demo.", href: "/demo", cta: "Open Demo" },
-                  { title: "View Pricing", desc: "From £10/month for advocacy to £10,000/month for enterprise.", href: "/pricing", cta: "See Plans" },
+                  { title: "View Pricing", desc: "From £10/month for advocacy to enterprise. Transparent, scalable plans.", href: "/pricing", cta: "See Plans" },
                   { title: "Read the Docs", desc: "Full API reference with authentication, endpoints and examples.", href: "/docs", cta: "API Docs" },
                 ].map((item, i) => (
                   <Link key={i} href={item.href} className="block p-5 bg-white rounded-xl border border-warm-200 hover:border-cannavec-200 transition-colors group">
