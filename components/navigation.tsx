@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LayoutDashboard, LogIn } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
   { label: "Demo", href: "/demo" },
@@ -14,6 +15,18 @@ const navItems = [
 
 export function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsLoggedIn(!!session);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-warm-200">
@@ -42,15 +55,28 @@ export function Navigation() {
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="/demo"
-              className="text-sm font-medium text-cannavec-500 hover:text-cannavec-600 transition-colors"
-            >
-              Try Demo
-            </Link>
-            <Link href="/pricing" className="cannavec-btn-primary text-sm !py-2 !px-4">
-              Get API Access
-            </Link>
+            {isLoggedIn ? (
+              <Link
+                href="/dashboard"
+                className="cannavec-btn-primary text-sm !py-2 !px-4 flex items-center gap-1.5"
+              >
+                <LayoutDashboard className="w-3.5 h-3.5" />
+                Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/auth/login"
+                  className="text-sm font-medium text-cannavec-500 hover:text-cannavec-600 transition-colors flex items-center gap-1.5"
+                >
+                  <LogIn className="w-3.5 h-3.5" />
+                  Login
+                </Link>
+                <Link href="/pricing" className="cannavec-btn-primary text-sm !py-2 !px-4">
+                  Get API Access
+                </Link>
+              </>
+            )}
           </div>
 
           <button
@@ -76,10 +102,34 @@ export function Navigation() {
                 {item.label}
               </Link>
             ))}
-            <div className="pt-3 border-t border-warm-200">
-              <Link href="/pricing" className="cannavec-btn-primary text-sm w-full text-center">
-                Get API Access
-              </Link>
+            <div className="pt-3 border-t border-warm-200 space-y-2">
+              {isLoggedIn ? (
+                <Link
+                  href="/dashboard"
+                  className="cannavec-btn-primary text-sm w-full text-center flex items-center justify-center gap-1.5"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <LayoutDashboard className="w-3.5 h-3.5" />
+                  Dashboard
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    href="/auth/login"
+                    className="block text-sm font-medium text-cannavec-500 hover:text-cannavec-600 text-center py-2"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/pricing"
+                    className="cannavec-btn-primary text-sm w-full text-center"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    Get API Access
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
