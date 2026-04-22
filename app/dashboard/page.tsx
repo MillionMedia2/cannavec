@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { Key, Bot, Zap, BarChart3, Settings, LogOut, Menu } from "lucide-react";
+import { Key, Bot, Zap, BarChart3, Settings, Menu } from "lucide-react";
+import { DashboardSidebar } from "@/components/dashboard-sidebar";
 
 const PLACEHOLDER_CARDS = [
   {
@@ -56,67 +57,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-warm-50 flex">
-      {/* Sidebar */}
-      <aside className="hidden md:flex flex-col w-56 bg-cannavec-900 text-white shrink-0">
-        <div className="flex items-center gap-2 px-5 py-5 border-b border-white/10">
-          <div className="w-7 h-7 cannavec-gradient rounded-md flex items-center justify-center">
-            <span className="text-white font-mono text-xs font-bold">cv</span>
-          </div>
-          <span className="font-display text-lg tracking-tight">cannavec</span>
-          <span className="text-accent text-xs font-mono mt-0.5">.ai</span>
-        </div>
-
-        <nav className="flex-1 px-3 py-4 space-y-1">
-          {[
-            { label: "Dashboard", href: "/dashboard", icon: BarChart3, active: true },
-            { label: "Chatbot", href: "/dashboard/chatbot", icon: Bot },
-            { label: "API Keys", href: "/dashboard/api-keys", icon: Key },
-            { label: "Skills", href: "/dashboard/skills", icon: Zap },
-            { label: "Usage", href: "/dashboard/usage", icon: BarChart3 },
-            { label: "Account", href: "/dashboard/account", icon: Settings },
-          ].map(({ label, href, icon: Icon, active }) => (
-            <a
-              key={href}
-              href={href}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                active
-                  ? "bg-white/10 text-white"
-                  : "text-white/60 hover:text-white hover:bg-white/5"
-              }`}
-            >
-              <Icon className="w-4 h-4" />
-              {label}
-            </a>
-          ))}
-
-          {profile?.is_admin && (
-            <a
-              href="/admin"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/60 hover:text-white hover:bg-white/5 transition-colors mt-4 border-t border-white/10 pt-4"
-            >
-              <Settings className="w-4 h-4" />
-              Admin
-            </a>
-          )}
-        </nav>
-
-        <form action="/auth/signout" method="post" className="px-3 pb-4">
-          <a
-            href="/auth/signout"
-            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-colors w-full"
-            onClick={async (e) => {
-              e.preventDefault();
-              const { createClient } = await import("@/lib/supabase/client");
-              const sb = createClient();
-              await sb.auth.signOut();
-              window.location.href = "/";
-            }}
-          >
-            <LogOut className="w-4 h-4" />
-            Sign out
-          </a>
-        </form>
-      </aside>
+      <DashboardSidebar isAdmin={profile?.is_admin ?? false} currentPath="/dashboard" />
 
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
