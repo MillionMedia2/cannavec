@@ -19,12 +19,12 @@ export default async function ChatbotPage() {
     .single();
 
   return (
-    <div className="min-h-screen bg-warm-50 flex">
+    <div className="h-screen bg-warm-50 flex overflow-hidden">
       <DashboardSidebar
         isAdmin={profile?.is_admin ?? false}
         currentPath="/dashboard/chatbot"
       />
-      <div className="flex-1 flex flex-col min-w-0 min-h-screen">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <ChatbotClient />
       </div>
     </div>

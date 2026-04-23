@@ -20,11 +20,12 @@ export function ChatbotClient() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isLoading]);
+    const el = messagesRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages]);
 
   async function submit(query: string) {
     if (!query.trim() || isLoading) return;
@@ -102,7 +103,7 @@ export function ChatbotClient() {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+      <div ref={messagesRef} className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
         {isEmpty && (
           <div className="flex flex-col items-center justify-center h-full gap-6 text-center py-12">
             <div
@@ -166,7 +167,6 @@ export function ChatbotClient() {
             </div>
           )}
 
-        <div ref={bottomRef} />
       </div>
 
       {/* Input */}
