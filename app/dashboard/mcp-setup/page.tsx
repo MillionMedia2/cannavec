@@ -14,7 +14,7 @@ export default async function McpSetupPage() {
   const admin = createAdminClient();
   const { data: keys } = await admin
     .from("api_keys")
-    .select("id, name, prefix")
+    .select("id, name, key_prefix")
     .eq("user_id", user.id)
     .eq("is_active", true)
     .order("created_at", { ascending: false });

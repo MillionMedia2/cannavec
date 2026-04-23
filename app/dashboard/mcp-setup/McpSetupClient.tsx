@@ -6,7 +6,7 @@ import { Check, Copy } from "lucide-react";
 interface ApiKeyOption {
   id: string;
   name: string | null;
-  prefix: string;
+  key_prefix: string;
 }
 
 export function MpcSetupClient({ keys }: { keys: ApiKeyOption[] }) {
@@ -64,7 +64,7 @@ export function MpcSetupClient({ keys }: { keys: ApiKeyOption[] }) {
         >
           {keys.map((k) => (
             <option key={k.id} value={k.id}>
-              {k.name ?? "Unnamed key"} — {k.prefix}
+              {k.name ?? "Unnamed key"} — {k.key_prefix}
             </option>
           ))}
         </select>
@@ -84,7 +84,7 @@ export function MpcSetupClient({ keys }: { keys: ApiKeyOption[] }) {
           <code className="bg-gray-100 px-1 rounded text-xs">YOUR_API_KEY</code>{" "}
           with the full key starting{" "}
           <code className="bg-gray-100 px-1 rounded text-xs">
-            {selectedKey?.prefix ?? "ck_live_…"}
+            {selectedKey?.key_prefix ?? "ck_live_…"}
           </code>{" "}
           (shown once when you created it). Then paste into your{" "}
           <code className="bg-gray-100 px-1 rounded text-xs">claude_desktop_config.json</code>.
