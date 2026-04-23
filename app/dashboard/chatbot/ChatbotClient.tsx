@@ -91,7 +91,7 @@ export function ChatbotClient() {
   const isEmpty = messages.length === 0;
 
   return (
-    <div className="flex flex-col h-full min-h-0">
+    <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
       {/* Header */}
       <div className="px-6 py-4 border-b border-gray-100">
         <h1 className="text-lg font-display font-semibold text-cannavec-900">
