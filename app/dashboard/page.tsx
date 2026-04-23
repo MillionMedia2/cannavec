@@ -1,33 +1,44 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { redirect } from "next/navigation";
-import { Key, Bot, Zap, BarChart3, Settings } from "lucide-react";
+import { Key, Bot, Zap, BarChart3, Plug, ArrowRight } from "lucide-react";
 import { DashboardSidebar } from "@/components/dashboard-sidebar";
+import Link from "next/link";
 
-const PLACEHOLDER_CARDS = [
+const LIVE_CARDS = [
   {
     icon: Bot,
-    title: "Cannabis KB Chatbot",
+    title: "Knowledge Base Chatbot",
     description: "Ask questions about cannabis science, evidence grades, and clinical guidance — powered by the CKF knowledge base.",
-    badge: "Coming soon",
+    href: "/dashboard/chatbot",
+    badge: "Live",
   },
   {
     icon: Key,
     title: "API Keys",
-    description: "Generate and manage your personal API keys. Each key is scoped to your tier and tracks usage.",
-    badge: "Coming soon",
+    description: "Generate and manage your personal API keys for direct access to the search API.",
+    href: "/dashboard/api-keys",
+    badge: "Live",
   },
+  {
+    icon: Plug,
+    title: "MCP Setup",
+    description: "Connect the Cannabis Knowledge Base directly to Claude Desktop using your API key.",
+    href: "/dashboard/mcp-setup",
+    badge: "Live",
+  },
+];
+
+const COMING_CARDS = [
   {
     icon: Zap,
     title: "Skills",
-    description: "Pre-built workflows for CoA analysis, strain selection, regulatory checks, and more — usable inside Claude Desktop.",
-    badge: "Coming soon",
+    description: "Pre-built workflows for CoA analysis, strain selection, regulatory checks, and more.",
   },
   {
     icon: BarChart3,
     title: "Usage",
     description: "Monitor your API usage, query history, and remaining monthly allowance in real time.",
-    badge: "Coming soon",
   },
 ];
 
@@ -40,12 +51,10 @@ const TIER_COLOURS: Record<string, string> = {
 };
 
 export default async function DashboardPage() {
-  // 1. Verify session
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/auth/login");
 
-  // 2. Fetch profile using service role client to bypass RLS
   const adminClient = createAdminClient();
   const { data: profile } = await adminClient
     .from("profiles")
@@ -62,7 +71,6 @@ export default async function DashboardPage() {
     <div className="min-h-screen bg-warm-50 flex">
       <DashboardSidebar isAdmin={profile?.is_admin ?? false} currentPath="/dashboard" />
 
-      {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile top bar */}
         <header className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-warm-200">
@@ -90,19 +98,52 @@ export default async function DashboardPage() {
             </span>
           </div>
 
-          {/* Feature cards */}
+          {/* Live features */}
+          <h2 className="text-xs font-semibold uppercase tracking-wide text-warm-400 mb-3">
+            Available now
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            {LIVE_CARDS.map(({ icon: Icon, title, description, href, badge }) => (
+              <Link
+                key={title}
+                href={href}
+                className="group bg-white rounded-xl border border-warm-200 p-5 flex flex-col gap-3 hover:border-[#8a9a5a] hover:shadow-sm transition-all"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="w-9 h-9 bg-[#f5f7f0] rounded-lg flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-[#8a9a5a]" />
+                  </div>
+                  <span className="text-xs font-medium bg-[#f5f7f0] text-[#8a9a5a] px-2 py-0.5 rounded-full">
+                    {badge}
+                  </span>
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-medium text-cannavec-900 mb-1">{title}</h3>
+                  <p className="text-sm text-warm-500 leading-relaxed">{description}</p>
+                </div>
+                <div className="flex items-center gap-1 text-xs text-[#8a9a5a] font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                  Open <ArrowRight className="w-3 h-3" />
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Coming soon */}
+          <h2 className="text-xs font-semibold uppercase tracking-wide text-warm-400 mb-3">
+            Coming soon
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {PLACEHOLDER_CARDS.map(({ icon: Icon, title, description, badge }) => (
+            {COMING_CARDS.map(({ icon: Icon, title, description }) => (
               <div
                 key={title}
-                className="bg-white rounded-xl border border-warm-200 p-5 flex flex-col gap-3"
+                className="bg-white rounded-xl border border-warm-200 p-5 flex flex-col gap-3 opacity-60"
               >
                 <div className="flex items-start justify-between">
                   <div className="w-9 h-9 bg-cannavec-50 rounded-lg flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-cannavec-500" />
+                    <Icon className="w-5 h-5 text-cannavec-400" />
                   </div>
-                  <span className="text-xs font-medium bg-warm-100 text-warm-500 px-2 py-0.5 rounded-full">
-                    {badge}
+                  <span className="text-xs font-medium bg-warm-100 text-warm-400 px-2 py-0.5 rounded-full">
+                    Coming soon
                   </span>
                 </div>
                 <div>
