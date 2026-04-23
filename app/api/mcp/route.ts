@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyApiKey } from "@/lib/api-keys";
-import { TOOLS, callSearchCannabisKb } from "@/lib/mcp/tools";
+import { buildToolsForTier, dispatchToolCall } from "@/lib/mcp/tools";
+import type { SkillContext } from "@/lib/skills/types";
 
 type JsonRpcRequest = {
   jsonrpc: "2.0";
@@ -52,20 +53,29 @@ export async function POST(request: NextRequest) {
       return new NextResponse(null, { status: 204 });
 
     case "tools/list":
-      return ok(id, { tools: TOOLS });
+      return ok(id, { tools: buildToolsForTier(tier) });
 
     case "tools/call": {
       const toolName: string = params?.name;
-      const toolArgs = params?.arguments ?? {};
-
-      if (toolName !== "search_cannabis_kb") {
-        return rpcError(id, -32601, `Unknown tool: ${toolName}`);
-      }
+      const toolArgs: Record<string, any> = params?.arguments ?? {};
+      const context: SkillContext = {
+        userId: keyResult.user_id!,
+        tier,
+        apiKeyId: keyResult.key_id!,
+      };
 
       try {
-        const text = await callSearchCannabisKb(toolArgs, tier);
-        return ok(id, { content: [{ type: "text", text }] });
+        const result = await dispatchToolCall(toolName, toolArgs, context);
+        return ok(id, {
+          content: [{ type: "text", text: result.text }],
+          ...(result.structuredContent
+            ? { structuredContent: result.structuredContent }
+            : {}),
+        });
       } catch (e: any) {
+        if (e.message?.startsWith("Unknown tool:")) {
+          return rpcError(id, -32601, e.message);
+        }
         return ok(id, {
           content: [{ type: "text", text: e.message }],
           isError: true,
