@@ -2,12 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { BarChart3, Bot, Key, Zap, Settings, LogOut } from "lucide-react";
+import { BarChart3, Bot, Key, Zap, Settings, LogOut, Plug } from "lucide-react";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/dashboard", icon: BarChart3 },
   { label: "Chatbot", href: "/dashboard/chatbot", icon: Bot },
   { label: "API Keys", href: "/dashboard/api-keys", icon: Key },
+  { label: "MCP Setup", href: "/dashboard/mcp-setup", icon: Plug },
   { label: "Skills", href: "/dashboard/skills", icon: Zap },
   { label: "Usage", href: "/dashboard/usage", icon: BarChart3 },
   { label: "Account", href: "/dashboard/account", icon: Settings },
