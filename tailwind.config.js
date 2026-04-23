@@ -8,6 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        brand: "#8a9a5a",
         cannavec: {
           50: "#f0fdf0",
           100: "#dcfce7",
