@@ -24,8 +24,7 @@ export function DashboardSidebar({ isAdmin, currentPath = "/dashboard" }: Dashbo
   const handleSignOut = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/");
-    router.refresh();
+    window.location.href = "/";
   };
 
   return (

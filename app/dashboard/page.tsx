@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { redirect } from "next/navigation";
-import { Key, Bot, Zap, BarChart3, Settings, Menu } from "lucide-react";
+import { Key, Bot, Zap, BarChart3, Settings } from "lucide-react";
 import { DashboardSidebar } from "@/components/dashboard-sidebar";
 
 const PLACEHOLDER_CARDS = [
@@ -39,12 +40,14 @@ const TIER_COLOURS: Record<string, string> = {
 };
 
 export default async function DashboardPage() {
+  // 1. Verify session
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
-
   if (!user) redirect("/auth/login");
 
-  const { data: profile } = await supabase
+  // 2. Fetch profile using service role client to bypass RLS
+  const adminClient = createAdminClient();
+  const { data: profile } = await adminClient
     .from("profiles")
     .select("full_name, role, is_admin")
     .eq("id", user.id)
@@ -69,9 +72,6 @@ export default async function DashboardPage() {
             </div>
             <span className="font-display text-lg text-cannavec-900">cannavec</span>
           </div>
-          <button className="p-2 text-warm-500">
-            <Menu className="w-5 h-5" />
-          </button>
         </header>
 
         <main className="flex-1 px-6 py-8 max-w-5xl">
