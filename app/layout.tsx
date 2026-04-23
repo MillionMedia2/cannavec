@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
+import { FooterWrapper } from "@/components/footer-wrapper";
 
 export const metadata: Metadata = {
   title: "Cannavec — Cannabis Knowledge API",
@@ -41,7 +41,7 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col">
         <Navigation />
         <main className="flex-1">{children}</main>
-        <Footer />
+        <FooterWrapper />
       </body>
     </html>
   );

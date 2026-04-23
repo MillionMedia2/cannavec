@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Menu, X, LayoutDashboard, LogIn } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -14,8 +15,13 @@ const navItems = [
 ];
 
 export function Navigation() {
+  const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  if (pathname?.startsWith("/dashboard") || pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   useEffect(() => {
     const supabase = createClient();
