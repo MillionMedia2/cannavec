@@ -89,5 +89,6 @@ export async function POST(request: NextRequest) {
     temperature: 0.3,
   });
 
-  return result.toTextStreamResponse();
+  // Stream plain text so ChatbotClient can read it with getReader()
+  return result.toTextStreamResponse({ headers: { "Content-Type": "text/plain; charset=utf-8" } });
 }
