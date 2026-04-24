@@ -19,20 +19,24 @@ export function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  if (pathname?.startsWith("/dashboard") || pathname?.startsWith("/admin")) {
-    return null;
-  }
+  const isAppRoute =
+    pathname?.startsWith("/dashboard") || pathname?.startsWith("/admin");
 
   useEffect(() => {
+    if (isAppRoute) return;
     const supabase = createClient();
     supabase.auth.getSession().then(({ data: { session } }) => {
       setIsLoggedIn(!!session);
     });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsLoggedIn(!!session);
-    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setIsLoggedIn(!!session);
+      }
+    );
     return () => subscription.unsubscribe();
-  }, []);
+  }, [isAppRoute]);
+
+  if (isAppRoute) return null;
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-warm-200">
