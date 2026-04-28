@@ -33,7 +33,7 @@ ${conversationSummary}
 
 Return ONLY a JSON array of 4 strings. No explanation, no markdown, no preamble. Example format:
 ["Question one?", "Question two?", "Question three?", "Question four?"]`,
-      maxTokens: 200,
+      maxOutputTokens: 200,
       temperature: 0.7,
     });
 
