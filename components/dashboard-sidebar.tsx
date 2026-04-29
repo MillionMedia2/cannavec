@@ -2,16 +2,21 @@
 
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { BarChart3, Bot, Key, Zap, Settings, LogOut, Plug } from "lucide-react";
+import { Bot, Key, Zap, Settings, LogOut, Plug, User } from "lucide-react";
 
-const NAV_ITEMS = [
-  { label: "Dashboard", href: "/dashboard", icon: BarChart3 },
+interface NavItem {
+  label: string;
+  href: string;
+  icon: any;
+  paidOnly?: boolean;
+}
+
+const NAV_ITEMS: NavItem[] = [
   { label: "Chatbot", href: "/dashboard/chatbot", icon: Bot },
+  { label: "Skills", href: "/dashboard/skills", icon: Zap },
   { label: "API Keys", href: "/dashboard/api-keys", icon: Key },
   { label: "MCP Setup", href: "/dashboard/mcp-setup", icon: Plug },
-  { label: "Skills", href: "/dashboard/skills", icon: Zap },
-  { label: "Usage", href: "/dashboard/usage", icon: BarChart3 },
-  { label: "Account", href: "/dashboard/account", icon: Settings },
+  { label: "Account", href: "/dashboard/account", icon: User },
 ];
 
 interface DashboardSidebarProps {
@@ -30,13 +35,13 @@ export function DashboardSidebar({ isAdmin, currentPath = "/dashboard" }: Dashbo
 
   return (
     <aside className="hidden md:flex flex-col w-56 bg-cannavec-900 text-white shrink-0">
-      <div className="flex items-center gap-2 px-5 py-5 border-b border-white/10">
+      <a href="/dashboard" className="flex items-center gap-2 px-5 py-5 border-b border-white/10">
         <div className="w-7 h-7 cannavec-gradient rounded-md flex items-center justify-center">
           <span className="text-white font-mono text-xs font-bold">cv</span>
         </div>
         <span className="font-display text-lg tracking-tight">cannavec</span>
         <span className="text-accent text-xs font-mono mt-0.5">.ai</span>
-      </div>
+      </a>
 
       <nav className="flex-1 px-3 py-4 space-y-1">
         {NAV_ITEMS.map(({ label, href, icon: Icon }) => (

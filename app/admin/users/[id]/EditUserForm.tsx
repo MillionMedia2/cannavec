@@ -3,10 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Trash2, AlertTriangle, RefreshCw } from "lucide-react";
+import { Trash2, AlertTriangle, RefreshCw, Star } from "lucide-react";
 
-const TIERS = ["free", "advocacy", "startup", "professional", "enterprise"];
-const USER_ROLES = ["patient", "doctor", "researcher", "developer", "other"];
+const TIERS = ["free", "vip", "advocacy", "startup", "professional", "enterprise"];
 
 interface Profile {
   id: string;
@@ -19,6 +18,7 @@ interface Profile {
   stripe_customer_id: string | null;
   created_at: string;
   last_login_at: string | null;
+  vip_expires_at: string | null;
 }
 
 export function EditUserForm({ profile, currentUserId }: { profile: Profile; currentUserId: string }) {
@@ -31,6 +31,7 @@ export function EditUserForm({ profile, currentUserId }: { profile: Profile; cur
     org_name: profile.org_name ?? "",
     is_admin: profile.is_admin,
     is_active: profile.is_active,
+    vip_expires_at: profile.vip_expires_at?.slice(0, 10) ?? "",
   });
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -42,16 +43,29 @@ export function EditUserForm({ profile, currentUserId }: { profile: Profile; cur
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
+  // Quick toggle between Free and VIP
+  function toggleVip() {
+    if (form.role === "vip") {
+      update("role", "free");
+    } else {
+      update("role", "vip");
+    }
+  }
+
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
     setError("");
     setSaved(false);
 
+    const payload: any = { ...form, id: profile.id };
+    // Send null if no expiry date set
+    payload.vip_expires_at = form.vip_expires_at ? new Date(form.vip_expires_at).toISOString() : null;
+
     const res = await fetch("/api/admin/users/update", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: profile.id, ...form }),
+      body: JSON.stringify(payload),
     });
 
     if (!res.ok) {
@@ -114,6 +128,42 @@ export function EditUserForm({ profile, currentUserId }: { profile: Profile; cur
         )}
       </div>
 
+      {/* VIP quick toggle */}
+      <div className="bg-white rounded-xl border border-amber-200 p-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Star className={`w-5 h-5 ${form.role === "vip" ? "text-amber-500 fill-amber-500" : "text-warm-300"}`} />
+            <div>
+              <p className="text-sm font-medium text-cannavec-800">VIP Access</p>
+              <p className="text-xs text-warm-400">Free API &amp; MCP access for invited members</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={toggleVip}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+              form.role === "vip" ? "bg-amber-500" : "bg-warm-200"
+            }`}
+          >
+            <span className={`inline-block h-4 w-4 rounded-full bg-white shadow transition-transform ${form.role === "vip" ? "translate-x-6" : "translate-x-1"}`} />
+          </button>
+        </div>
+
+        {form.role === "vip" && (
+          <div className="mt-4 pt-4 border-t border-amber-100">
+            <label className="block text-xs text-warm-400 mb-1">
+              VIP expiry date <span className="text-warm-300">(leave blank for indefinite)</span>
+            </label>
+            <input
+              type="date"
+              value={form.vip_expires_at}
+              onChange={(e) => update("vip_expires_at", e.target.value)}
+              className="w-full px-3 py-2 rounded-lg border border-warm-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30"
+            />
+          </div>
+        )}
+      </div>
+
       {/* Editable fields */}
       <form onSubmit={handleSave} className="bg-white rounded-xl border border-warm-200 p-6 space-y-4">
         <div>
@@ -134,7 +184,9 @@ export function EditUserForm({ profile, currentUserId }: { profile: Profile; cur
             className="w-full px-3 py-2.5 rounded-lg border border-warm-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-cannavec-500/30"
           >
             {TIERS.map((t) => (
-              <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
+              <option key={t} value={t}>
+                {t === "vip" ? "VIP" : t.charAt(0).toUpperCase() + t.slice(1)}
+              </option>
             ))}
           </select>
         </div>
