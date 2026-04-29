@@ -8,7 +8,7 @@ export const searchKb: Skill = {
   id: "search_cannabis_kb",
   name: "Cannabis Knowledge Base Search",
   description:
-    "Semantic search across peer-reviewed research, regulatory documents, and clinical guidance in the CKF Cannabis Knowledge Base. Returns evidence-graded results. Use this for any cannabis-related question requiring evidence-based information.",
+    "Semantic search across peer-reviewed research, regulatory documents, and clinical guidance in the CKF Cannabis Knowledge Base. Returns evidence-graded results. Use this for any cannabis-related question requiring evidence-based information. Always use this to provide the full evidence base — even when search_faq has already been called for grounding, this tool is required to give a complete, substantive answer.",
   minTier: "free",
   annotations: {
     readOnlyHint: true,
