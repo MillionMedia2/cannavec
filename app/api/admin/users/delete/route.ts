@@ -7,13 +7,13 @@ export async function POST(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
 
-  const { data: caller } = await supabase.from("profiles").select("is_admin").eq("id", user.id).single();
+  const admin = createAdminClient();
+  const { data: caller } = await admin.from("profiles").select("is_admin").eq("id", user.id).single();
   if (!caller?.is_admin) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { id } = await request.json();
   if (id === user.id) return NextResponse.json({ error: "Cannot delete own account" }, { status: 400 });
 
-  const admin = createAdminClient();
   // Deleting from auth.users cascades to profiles via FK
   const { error } = await admin.auth.admin.deleteUser(id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });

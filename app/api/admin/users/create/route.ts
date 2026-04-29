@@ -7,12 +7,11 @@ export async function POST(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorised" }, { status: 401 });
 
-  const { data: caller } = await supabase.from("profiles").select("is_admin").eq("id", user.id).single();
+  const admin = createAdminClient();
+  const { data: caller } = await admin.from("profiles").select("is_admin").eq("id", user.id).single();
   if (!caller?.is_admin) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { email, full_name, role, user_role, org_name } = await request.json();
-
-  const admin = createAdminClient();
 
   // Create auth user and send magic link
   const { data: created, error: createError } = await admin.auth.admin.createUser({
