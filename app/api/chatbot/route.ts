@@ -65,15 +65,20 @@ export async function POST(request: NextRequest) {
   const query: string =
     [...messages].reverse().find((m: any) => m.role === "user")?.content ?? "";
 
-  // FAQ-first retrieval
-  let contextBlock = "";
-  const faqHits = await searchNamespace(query, "cannabis_faq", 1);
+  // Query both namespaces in parallel — always use KB, supplement with FAQ if relevant
+  const [faqHits, kbHits] = await Promise.all([
+    searchNamespace(query, "cannabis_faq", 1),
+    searchNamespace(query, "cannabis", 5),
+  ]);
+
+  const contextParts: string[] = [];
   if (faqHits.length > 0 && faqHits[0]._score >= FAQ_THRESHOLD) {
-    contextBlock = buildContext(faqHits, "faq");
-  } else {
-    const kbHits = await searchNamespace(query, "cannabis", 5);
-    if (kbHits.length > 0) contextBlock = buildContext(kbHits, "kb");
+    contextParts.push(buildContext(faqHits, "faq"));
   }
+  if (kbHits.length > 0) {
+    contextParts.push(buildContext(kbHits, "kb"));
+  }
+  const contextBlock = contextParts.join("\n\n");
 
   const augmented = messages.map((m: any, i: number) =>
     i === messages.length - 1 && m.role === "user" && contextBlock
