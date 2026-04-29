@@ -1,9 +1,8 @@
 import { searchKb } from "./search_kb";
-import { searchFaq } from "./search_faq";
 import { regulatoryCheck } from "./regulatory_check";
 import type { Skill } from "./types";
 
-export const ALL_SKILLS: Skill[] = [searchKb, searchFaq, regulatoryCheck];
+export const ALL_SKILLS: Skill[] = [searchKb, regulatoryCheck];
 
 const TIER_RANK: Record<string, number> = {
   free: 0,
