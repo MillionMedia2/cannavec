@@ -62,8 +62,20 @@ export async function POST(request: NextRequest) {
   }
 
   const { messages } = await request.json();
-  const query: string =
-    [...messages].reverse().find((m: any) => m.role === "user")?.content ?? "";
+
+  // --- CONVERSATION MEMORY ---
+  // Cap history at last 20 messages to keep context window manageable.
+  // The client sends the full history; we slice here server-side.
+  const MAX_HISTORY = 20;
+  const trimmedMessages = messages.slice(-MAX_HISTORY);
+
+  // Build a context-aware search query from the last 3 turns so that
+  // follow-up questions ("what about for children?") retrieve good results.
+  const recentTurns = trimmedMessages.slice(-6); // up to 3 user+assistant pairs
+  const queryParts = recentTurns
+    .filter((m: any) => m.role === "user")
+    .map((m: any) => m.content as string);
+  const query: string = queryParts.join(" ") || "";
 
   // Query both namespaces in parallel — always use KB, supplement with FAQ if relevant
   const [faqHits, kbHits] = await Promise.all([
@@ -80,8 +92,10 @@ export async function POST(request: NextRequest) {
   }
   const contextBlock = contextParts.join("\n\n");
 
-  const augmented = messages.map((m: any, i: number) =>
-    i === messages.length - 1 && m.role === "user" && contextBlock
+  // Inject retrieved context into the last user message only.
+  // Previous messages are passed as-is so Claude has full conversation memory.
+  const augmented = trimmedMessages.map((m: any, i: number) =>
+    i === trimmedMessages.length - 1 && m.role === "user" && contextBlock
       ? { ...m, content: `${contextBlock}\n\nUser question: ${m.content}` }
       : m
   );
