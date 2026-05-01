@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
 
   if (createError) return NextResponse.json({ error: createError.message }, { status: 500 });
 
-  // Update profile with tier and org (trigger creates the row)
-  await admin.from("profiles").update({ role, org_name }).eq("id", created.user.id);
+  // Update profile with tier, user_role and org (trigger creates the row)
+  await admin.from("profiles").update({ role, user_role, org_name }).eq("id", created.user.id);
 
   // Send magic link
   const { error: linkError } = await admin.auth.admin.generateLink({

@@ -14,13 +14,13 @@ export function CTASection() {
           verified cannabis science.
         </h2>
         <p className="text-lg text-white/70 mb-10 max-w-2xl mx-auto">
-          Join the first wave of companies building on the Cannabis Knowledge
-          Foundation. From £750/month for startups, with enterprise plans available on request.
+          Join for free and start building on the Cannabis Knowledge Foundation.
+          From £75/month for full API & MCP access, with enterprise plans available on request.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link href="/pricing" className="cannavec-btn-accent text-base group">
-            Get API Access
+            Join For Free
             <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link
@@ -32,7 +32,7 @@ export function CTASection() {
         </div>
 
         <p className="text-sm text-white/40 mt-8">
-          Meet us at ICBC, Berlin · April 2026
+          Meet us at Cannabis Europa, London · May 26 & 27
         </p>
       </div>
     </section>

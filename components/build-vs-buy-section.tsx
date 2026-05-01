@@ -1,4 +1,5 @@
-import { Check, X } from "lucide-react";
+import { Check, X, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export function BuildVsBuySection() {
   return (
@@ -71,7 +72,7 @@ export function BuildVsBuySection() {
                 { label: "Editorial governance by named experts", included: true },
                 { label: "Evidence grading (A/B/C) on every record", included: true },
                 { label: "RAG-optimised for AI integration", included: true },
-                { label: "UK/EU regulatory context built in", included: true },
+                { label: "Global regulatory context built in", included: true },
                 { label: "Continuous updates & new research", included: true },
                 { label: "Priority support & SLA", included: true },
               ].map((item, i) => (
@@ -82,13 +83,13 @@ export function BuildVsBuySection() {
               ))}
             </div>
 
-            <div className="p-4 bg-white/10 rounded-lg backdrop-blur-sm">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-white/80">Annual Cost</span>
-                <span className="text-xl font-display text-accent-light">£120K/year</span>
-              </div>
-              <p className="text-xs text-white/50 mt-1">Live today. Cancel anytime.</p>
-            </div>
+            <Link
+              href="/contact"
+              className="flex items-center justify-center gap-2 w-full py-3 rounded-lg font-medium text-sm transition-all bg-accent text-white hover:bg-accent-dark"
+            >
+              Talk to Us
+              <ArrowRight size={16} />
+            </Link>
           </div>
         </div>
       </div>

@@ -23,7 +23,7 @@ export function HeroSection() {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-8">
             <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse-soft" />
             <span className="text-xs font-medium text-white/90 tracking-wide">
-              MEET US AT ICBC, BERLIN · APRIL 2026
+              MEET US AT CANNABIS EUROPA, LONDON · MAY 26–27
             </span>
           </div>
 

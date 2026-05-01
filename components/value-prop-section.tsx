@@ -40,9 +40,9 @@ const features = [
   },
   {
     icon: Globe,
-    title: "UK & EU Regulatory Context",
+    title: "Global",
     description:
-      "Written for the European medical cannabis market. UK scheduling, EU novel food regulations, prescribing frameworks.",
+      "We write for the global cannabis supply market.",
   },
 ];
 

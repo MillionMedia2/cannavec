@@ -10,6 +10,16 @@ export async function GET(request: NextRequest) {
     const supabase = createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
+      // Persist signup metadata (user_role, org_name) into the profile row
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user?.user_metadata) {
+        const { full_name, role, org_name } = user.user_metadata;
+        await supabase.from("profiles").update({
+          ...(full_name && { full_name }),
+          ...(role && { user_role: role }),
+          ...(org_name && { org_name }),
+        }).eq("id", user.id);
+      }
       return NextResponse.redirect(`${origin}${next}`);
     }
   }
