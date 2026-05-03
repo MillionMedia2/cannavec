@@ -1,0 +1,193 @@
+# Cannavec.ai — LLM Integration Guide
+
+Cannavec.ai is a specialist cannabis knowledge platform and commercial API. It exposes the Cannabis Knowledge Foundation (CKF) — an editorially governed, evidence-graded cannabis knowledge base — as queryable infrastructure for developers, AI agents, and enterprise integrators.
+
+**Mission:** Evidence-based cannabis science, delivered as infrastructure. Seed to sale to prescription.  
+**Operator:** Million Media Ltd (parent: Plantz.io)  
+**Base URL:** https://cannavec.ai  
+**API base:** https://cannavec.ai/api/v1
+
+---
+
+## Knowledge Base
+
+The CKF knowledge base covers the full clinical and commercial cannabis landscape. It is organised into two namespaces:
+
+- **cannabis** — Cannabinoid mechanisms, clinical evidence, dosing, drug interactions, safety profiles, contraindications, and regulatory context (UK/EU focus).
+- **cannabis_products** — UK/EU cannabis products, formulations, terpene profiles, cannabinoid content, and product-level metadata.
+
+### Evidence Grading
+
+Every record in the knowledge base carries an evidence grade:
+
+- **Level A** — RCTs, systematic reviews, meta-analyses
+- **Level B** — Observational studies, cohort studies, clinical registries
+- **Level C** — Expert opinion, case reports, traditional use, preclinical studies
+
+Grades are returned in every API response as `evidence_grade` metadata. Responses also include an `authority_score` (1–10) and `clinical_relevance` field.
+
+---
+
+## API Reference
+
+### Authentication
+
+All requests require a Bearer token in the Authorization header:
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+Public demo key (rate-limited, 5 queries/day): `demo_public_key`
+
+Paid API keys are issued on subscription. See pricing below.
+
+---
+
+### POST /api/v1/search
+
+Query the cannabis knowledge base using natural language.
+
+**Request body:**
+
+```json
+{
+  "query": "What is the evidence for CBD in treatment-resistant epilepsy?",
+  "namespace": "cannabis",
+  "top_k": 5,
+  "include_metadata": true
+}
+```
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `query` | string | Yes | Natural language query |
+| `namespace` | string | Yes | `cannabis` or `cannabis_products` |
+| `top_k` | integer | No | Number of results to return (default: 5, max: 20) |
+| `include_metadata` | boolean | No | Include full metadata fields (default: true) |
+
+**Response:**
+
+```json
+{
+  "results": [
+    {
+      "id": "cbd_epilepsy_rct_001",
+      "score": 0.94,
+      "metadata": {
+        "topic": "CBD — Epilepsy (Treatment-Resistant)",
+        "finding": "Cannabidiol (Epidyolex) demonstrated statistically significant reduction in seizure frequency vs placebo in Dravet syndrome and LGS patients across three Phase III RCTs.",
+        "evidence_grade": "Level A",
+        "authority_score": 9,
+        "clinical_relevance": "High — directly applicable to prescribing decisions in treatment-resistant paediatric epilepsy.",
+        "sources": "Devinsky et al. 2017 (NEJM); Thiele et al. 2018 (Lancet); Miller et al. 2020 (Epilepsia)"
+      }
+    }
+  ],
+  "meta": {
+    "response_time_ms": 142,
+    "namespace": "cannabis",
+    "query_length": 61,
+    "results_returned": 5,
+    "evidence_grades": {
+      "Level A": 3,
+      "Level B": 2
+    }
+  }
+}
+```
+
+**Namespace access by tier:**
+
+| Tier | `cannabis` | `cannabis_products` |
+|---|---|---|
+| Free (demo) | ✓ (5/day) | ✗ |
+| Individual (£50/mo) | ✓ | ✓ |
+| Company (£500/mo) | ✓ | ✓ |
+| Enterprise | ✓ | ✓ |
+
+---
+
+## Pricing
+
+| Tier | Price | Access |
+|---|---|---|
+| Free | £0 | 5 demo queries/day, `cannabis` namespace only |
+| Individual | £50/month | Full API access, both namespaces |
+| Company | £500/month | Full API access, both namespaces, multi-user |
+| Enterprise | Contact us | Unlimited, white-label, SLA, named account manager |
+
+Subscriptions managed via Stripe. API keys issued automatically on payment confirmation.
+
+---
+
+## Skills (AI Agents)
+
+Cannavec offers Skills — task-specific interfaces built on top of the knowledge base, designed for cannabis industry workflows. Skills are available via the web UI (interactive) and via the API (parameter-based).
+
+**Available Skills (v1):**
+- **Article Generator** — Generate evidence-cited cannabis articles by condition, audience, tone, and evidence level.
+
+**Planned Skills:**
+- Patient Information Sheet Generator
+- Drug Interaction Checker
+- Product Description Writer
+- Regulatory Summary (by jurisdiction)
+- Clinical Protocol Builder
+
+---
+
+## MCP Server (Planned)
+
+Cannavec will expose an MCP (Model Context Protocol) server endpoint, allowing AI agents and coding assistants to query the knowledge base natively as a tool, without REST API wrapping.
+
+Endpoint (when live): `https://cannavec.ai/mcp`
+
+---
+
+## Editorial Governance
+
+The CKF knowledge base is governed by an independent editorial board. No commercial influence on knowledge content. Evidence grades are assigned by editorial review, not by the API operator.
+
+**Editorial board includes:** Patient advocates, independent reviewers, data scientists, and cannabis industry practitioners with direct prescribing or regulatory experience.
+
+---
+
+## Quick-Start for AI Agents
+
+```python
+import requests
+
+headers = {
+    "Authorization": "Bearer YOUR_API_KEY",
+    "Content-Type": "application/json"
+}
+
+payload = {
+    "query": "THC dosing guidelines for chronic pain",
+    "namespace": "cannabis",
+    "top_k": 5,
+    "include_metadata": True
+}
+
+response = requests.post(
+    "https://cannavec.ai/api/v1/search",
+    headers=headers,
+    json=payload
+)
+
+data = response.json()
+for result in data["results"]:
+    print(f"[{result['metadata']['evidence_grade']}] {result['metadata']['finding']}")
+```
+
+---
+
+## Support & Resources
+
+- **Web UI:** https://cannavec.ai
+- **API docs:** https://cannavec.ai/docs
+- **About / Editorial board:** https://cannavec.ai/about
+- **Pricing:** https://cannavec.ai/pricing
+- **Enterprise enquiries:** https://cannavec.ai/contact
+- **Operator:** Million Media Ltd — https://millionmedia.com

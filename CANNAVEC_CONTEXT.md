@@ -53,7 +53,35 @@ The knowledge base lives in Pinecone (`plantz1` index) and is sourced from:
 - **Knowledge source files:** `/Users/neilcartwright/test/Claude/knowledge/cannabis/mc-knowledge-base/cannabis/`
 - **Airtable:** Primary data source for KB Registry, FAQ Registry, Products
 - **Sanity CMS:** Being integrated as the headless CMS layer
-- **Pipeline:** Airtable → CDAL scripts → Sanity → Pinecone
+- **Pipeline:** Markdown source files → CDAL compiler → Sanity CMS → Pinecone
+
+### The CDAL Pipeline — Why It Matters for Cannavec
+
+What Cannavec returns in the API response is entirely determined by what is in Pinecone. What is in Pinecone is entirely determined by how the Cannabis Knowledge Base articles are authored and compiled. This is the chain:
+
+```
+KB Article (markdown)
+  ↓ YAML frontmatter → document-level metadata on every vector
+  ↓ H2 headings → one Pinecone vector per H2 section
+  ↓ ISO code in H2 heading → section-level jurisdiction filter
+  ↓ evidence_grade in YAML → evidence_grade in API response metadata
+  ↓ question_groups in YAML → retrieval pattern matching
+```
+
+**CDAL** (Cannabis Document Authoring Language) is the compiler that transforms KB markdown articles into Pinecone vector records. It:
+- Splits each article at `##` H2 boundaries — one section = one Pinecone vector
+- Extracts the ISO country code from H2 headings (e.g., `## Germany (DE) — ...`) and sets it as section-level jurisdiction metadata — enabling country-filtered retrieval
+- Propagates YAML metadata (`evidence_grade`, `domain_layer`, `audience`, `question_groups`) to every vector from the document
+- Derives question patterns and attaches them to sections post-compilation
+
+**The practical consequence for Cannavec:** The `evidence_grade` field in the API response (`"evidence_grade": "Level A"`) comes from the YAML frontmatter of the KB article that produced the matched vector. If the article is authored correctly with an accurate evidence grade, Cannavec returns accurate evidence grade metadata. If articles are poorly structured with oversized sections, retrieval precision suffers across the Cannavec API.
+
+Anyone working on Cannavec's API response quality should understand that improvements require KB authoring changes, not API changes. The pipeline is: better KB authoring → better CDAL compilation → better Pinecone vectors → better Cannavec API responses.
+
+**KB article authoring standard:** `cannabis/00_meta_layer/cannabis-authoring-standard.md` (v2.6)
+**CDAL compilation rules:** `scripts/sanity-cms/docs/cdal-compilation-rules.md` (v3.0)
+
+### Pinecone namespaces and content
 
 | Namespace | Content | Status |
 |---|---|---|
@@ -285,6 +313,7 @@ npm run dev
 |---|---|
 | 2026-02-18 | Initial build. Demo section example buttons bug fixed. Hardcoded record counts removed across site. |
 | 2026-03-05 | Event badge updated: Cannabis Europa Paris → ICBC Berlin April 2026. Enterprise pricing: £10,000 → "Contact Us" (all pages). Demo wired to real Pinecone queries. Client-side rate limiting (5/day) implemented. `.env.local` created from master. |
+| 2026-05-02 | Added CDAL Pipeline section explaining the KB→CDAL→Pinecone→API chain and why KB authoring quality directly determines Cannavec API response quality. |
 
 ---
 
