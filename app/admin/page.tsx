@@ -1,6 +1,5 @@
+import { getAuthProfile } from "@/lib/dev-auth";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { UserPlus, Search, Download, Settings, LayoutDashboard } from "lucide-react";
 import { AdminActions } from "./AdminActions";
@@ -18,10 +17,7 @@ export default async function AdminPage({
 }: {
   searchParams: { q?: string; tier?: string; status?: string; page?: string };
 }) {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/login");
-
+  const { id: currentUserId } = await getAuthProfile();
   const admin = createAdminClient();
   const page = parseInt(searchParams.page ?? "1", 10);
   const perPage = 25;
@@ -159,7 +155,7 @@ export default async function AdminPage({
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <AdminActions profile={p} currentUserId={user.id} />
+                      <AdminActions profile={p} currentUserId={currentUserId} />
                     </td>
                   </tr>
                 ))}

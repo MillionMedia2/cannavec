@@ -1,7 +1,7 @@
 export const TIER_NAMESPACES: Record<string, string[]> = {
-  free:         ["cannabis", "cannabis_faq"],
-  vip:          ["cannabis", "cannabis_faq"],
-  advocacy:     ["cannabis", "cannabis_faq"],
+  free:         ["cannabis", "cannabis_faq", "cannabis_products"],
+  vip:          ["cannabis", "cannabis_faq", "cannabis_products"],
+  advocacy:     ["cannabis", "cannabis_faq", "cannabis_products"],
   startup:      ["cannabis", "cannabis_faq", "cannabis_products"],
   professional: ["cannabis", "cannabis_faq", "cannabis_products", "natural_remedies"],
   enterprise:   ["cannabis", "cannabis_faq", "cannabis_products", "natural_remedies"],

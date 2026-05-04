@@ -312,7 +312,7 @@ npm run dev
 | Date | Change |
 |---|---|
 | 2026-02-18 | Initial build. Demo section example buttons bug fixed. Hardcoded record counts removed across site. |
-| 2026-03-05 | Event badge updated: Cannabis Europa Paris → ICBC Berlin April 2026. Enterprise pricing: £10,000 → "Contact Us" (all pages). Demo wired to real Pinecone queries. Client-side rate limiting (5/day) implemented. `.env.local` created from master. |
+| 2026-03-05 | Event badge updated: Cannabis Europa Paris → ICBC Berlin April 2026. Enterprise pricing: £10,000 → "Contact Us" (all pages). Demo wired to real Pinecone queries. Client-side rate limiting (5/day) implemented. `.env.local` created from master. Product Lookup Skill built: new API route (`/api/v1/product-lookup`), component, page at `/skills/product-lookup`. Nav updated with Skills link. Tiers updated to give all tiers access to `cannabis_products`. |
 | 2026-05-02 | Added CDAL Pipeline section explaining the KB→CDAL→Pinecone→API chain and why KB authoring quality directly determines Cannavec API response quality. |
 
 ---

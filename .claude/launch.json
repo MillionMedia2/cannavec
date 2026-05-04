@@ -5,8 +5,7 @@
       "name": "cannavec",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "port": 3001,
-      "autoPort": true
+      "port": 3000
     }
   ]
 }

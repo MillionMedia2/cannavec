@@ -1,8 +1,7 @@
-import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
-import { redirect } from "next/navigation";
+import { getAuthProfile } from "@/lib/dev-auth";
 import { DashboardSidebar } from "@/components/dashboard-sidebar";
-import { Menu, Search, FileCheck, Scale, GitCompare, FlaskConical, Filter, Package, Stethoscope, Pill, Zap } from "lucide-react";
+import { Menu, Search, FileCheck, Scale, GitCompare, FlaskConical, Filter, Package, Stethoscope, Pill, Zap, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 interface SkillTile {
   icon: any;
@@ -10,6 +9,7 @@ interface SkillTile {
   description: string;
   tier: string;
   status: "live" | "coming_soon";
+  href?: string;
   mcpEligible: boolean;
 }
 
@@ -67,7 +67,8 @@ const SKILLS: SkillTile[] = [
     name: "Product Lookup",
     description: "Search the UK/EU cannabis products database — product details, THC/CBD content, terpene profiles, and jurisdiction availability.",
     tier: "Startup",
-    status: "coming_soon",
+    status: "live",
+    href: "/dashboard/skills/product-lookup",
     mcpEligible: true,
   },
   {
@@ -96,20 +97,11 @@ const TIER_BADGE: Record<string, string> = {
 };
 
 export default async function SkillsPage() {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/login");
-
-  const admin = createAdminClient();
-  const { data: profile } = await admin
-    .from("profiles")
-    .select("is_admin")
-    .eq("id", user.id)
-    .single();
+  const profile = await getAuthProfile();
 
   return (
     <div className="min-h-screen bg-warm-50 flex">
-      <DashboardSidebar isAdmin={profile?.is_admin ?? false} currentPath="/dashboard/skills" />
+      <DashboardSidebar isAdmin={profile.is_admin} currentPath="/dashboard/skills" />
 
       <div className="flex-1 flex flex-col min-w-0">
         <header className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-warm-200">
@@ -140,47 +132,53 @@ export default async function SkillsPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {SKILLS.map((skill) => (
-              <div
-                key={skill.name}
-                className={`bg-white rounded-xl border border-warm-200 p-5 flex flex-col gap-3 ${
-                  skill.status === "coming_soon" ? "opacity-70" : ""
-                }`}
-              >
-                <div className="flex items-start justify-between">
-                  <div className="w-9 h-9 bg-[#f5f7f0] rounded-lg flex items-center justify-center">
-                    <skill.icon className={`w-5 h-5 ${
-                      skill.status === "live" ? "text-[#8a9a5a]" : "text-warm-400"
-                    }`} />
+            {SKILLS.map((skill) => {
+              const card = (
+                <div className={`bg-white rounded-xl border p-5 flex flex-col gap-3 transition-all ${
+                  skill.status === "coming_soon"
+                    ? "opacity-70 border-warm-200"
+                    : skill.href
+                    ? "border-warm-200 hover:border-[#8a9a5a] hover:shadow-sm group cursor-pointer"
+                    : "border-warm-200"
+                }`}>
+                  <div className="flex items-start justify-between">
+                    <div className="w-9 h-9 bg-[#f5f7f0] rounded-lg flex items-center justify-center">
+                      <skill.icon className={`w-5 h-5 ${skill.status === "live" ? "text-[#8a9a5a]" : "text-warm-400"}`} />
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      {skill.mcpEligible && (
+                        <span className="text-[10px] font-mono bg-cannavec-50 text-cannavec-600 px-1.5 py-0.5 rounded">MCP</span>
+                      )}
+                      {skill.status === "live" ? (
+                        <span className="text-xs font-medium bg-[#f5f7f0] text-[#8a9a5a] px-2 py-0.5 rounded-full">Live</span>
+                      ) : (
+                        <span className="text-xs font-medium bg-warm-100 text-warm-400 px-2 py-0.5 rounded-full">Coming soon</span>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    {skill.mcpEligible && (
-                      <span className="text-[10px] font-mono bg-cannavec-50 text-cannavec-600 px-1.5 py-0.5 rounded">
-                        MCP
+                  <div className="flex-1">
+                    <h3 className="font-medium text-cannavec-900 text-sm mb-1">{skill.name}</h3>
+                    <p className="text-xs text-warm-500 leading-relaxed">{skill.description}</p>
+                  </div>
+                  <div className="flex items-center justify-between pt-1">
+                    <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${TIER_BADGE[skill.tier] ?? TIER_BADGE.Free}`}>
+                      {skill.tier}
+                    </span>
+                    {skill.href && skill.status === "live" && (
+                      <span className="flex items-center gap-1 text-xs text-[#8a9a5a] font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                        Open <ArrowRight className="w-3 h-3" />
                       </span>
                     )}
-                    {skill.status === "live" ? (
-                      <span className="text-xs font-medium bg-[#f5f7f0] text-[#8a9a5a] px-2 py-0.5 rounded-full">
-                        Live
-                      </span>
-                    ) : (
-                      <span className="text-xs font-medium bg-warm-100 text-warm-400 px-2 py-0.5 rounded-full">
-                        Coming soon
-                      </span>
-                    )}
                   </div>
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-medium text-cannavec-900 text-sm mb-1">{skill.name}</h3>
-                  <p className="text-xs text-warm-500 leading-relaxed">{skill.description}</p>
-                </div>
-                <div className="pt-1">
-                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${TIER_BADGE[skill.tier] ?? TIER_BADGE.Free}`}>
-                    {skill.tier}
-                  </span>
-                </div>
-              </div>
-            ))}
+              );
+
+              return skill.href && skill.status === "live" ? (
+                <Link key={skill.name} href={skill.href}>{card}</Link>
+              ) : (
+                <div key={skill.name}>{card}</div>
+              );
+            })}
           </div>
         </main>
       </div>

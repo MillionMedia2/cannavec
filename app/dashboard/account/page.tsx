@@ -1,33 +1,23 @@
-import { createClient } from "@/lib/supabase/server";
+import { getAuthProfile } from "@/lib/dev-auth";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { redirect } from "next/navigation";
 import { DashboardSidebar } from "@/components/dashboard-sidebar";
 import { AccountClient } from "./AccountClient";
 import { hasPaidAccess } from "@/lib/tiers";
 import { Menu } from "lucide-react";
 
 export default async function AccountPage() {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/login");
-
+  const profile = await getAuthProfile();
   const admin = createAdminClient();
-  const { data: profile } = await admin
-    .from("profiles")
-    .select("full_name, email, role, org_name, is_admin, created_at")
-    .eq("id", user.id)
-    .single();
 
-  const tier = profile?.role ?? "free";
-  const isAdmin = profile?.is_admin ?? false;
+  const tier = profile.role;
+  const isAdmin = profile.is_admin;
   const canAccessApi = hasPaidAccess(tier, isAdmin);
 
-  // Count active API keys
   const { count: keyCount } = canAccessApi
     ? await admin
         .from("api_keys")
         .select("id", { count: "exact", head: true })
-        .eq("user_id", user.id)
+        .eq("user_id", profile.id)
         .eq("is_active", true)
     : { count: 0 };
 
@@ -51,12 +41,12 @@ export default async function AccountPage() {
         <main className="flex-1 px-6 py-8 max-w-lg">
           <AccountClient
             profile={{
-              fullName: profile?.full_name ?? "",
-              email: profile?.email ?? user.email ?? "",
-              orgName: profile?.org_name ?? "",
+              fullName: profile.full_name,
+              email: profile.email,
+              orgName: profile.org_name,
               role: tier,
               isAdmin,
-              createdAt: profile?.created_at ?? "",
+              createdAt: profile.created_at,
             }}
             activeKeyCount={keyCount ?? 0}
             canAccessApi={canAccessApi}

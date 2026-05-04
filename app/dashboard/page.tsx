@@ -1,6 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
-import { redirect } from "next/navigation";
+import { getAuthProfile } from "@/lib/dev-auth";
 import { Key, Bot, Zap, Plug, ArrowRight } from "lucide-react";
 import { DashboardSidebar } from "@/components/dashboard-sidebar";
 import { hasPaidAccess } from "@/lib/tiers";
@@ -51,20 +49,10 @@ const TIER_COLOURS: Record<string, string> = {
 };
 
 export default async function DashboardPage() {
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/login");
-
-  const adminClient = createAdminClient();
-  const { data: profile } = await adminClient
-    .from("profiles")
-    .select("full_name, role, is_admin")
-    .eq("id", user.id)
-    .single();
-
-  const displayName = profile?.full_name || user.email?.split("@")[0] || "there";
-  const tier = profile?.role ?? "free";
-  const isAdmin = profile?.is_admin ?? false;
+  const profile = await getAuthProfile();
+  const displayName = profile.full_name;
+  const tier = profile.role;
+  const isAdmin = profile.is_admin;
   const tierLabel = tier === "vip" ? "VIP" : tier.charAt(0).toUpperCase() + tier.slice(1);
   const tierClass = TIER_COLOURS[tier] ?? TIER_COLOURS.free;
   const canAccessPaid = hasPaidAccess(tier, isAdmin);

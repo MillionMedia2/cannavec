@@ -1,6 +1,5 @@
+import { getAuthProfile } from "@/lib/dev-auth";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
 import { DashboardSidebar } from "@/components/dashboard-sidebar";
 import { ApiAccessGate } from "@/components/ApiAccessGate";
 import { MpcSetupClient } from "./McpSetupClient";
@@ -8,26 +7,18 @@ import { hasPaidAccess } from "@/lib/tiers";
 import { Menu } from "lucide-react";
 
 export default async function McpSetupPage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/login");
-
+  const profile = await getAuthProfile();
   const admin = createAdminClient();
-  const { data: profile } = await admin
-    .from("profiles")
-    .select("is_admin, role")
-    .eq("id", user.id)
-    .single();
 
-  const isAdmin = profile?.is_admin ?? false;
-  const tier = profile?.role ?? "free";
+  const isAdmin = profile.is_admin;
+  const tier = profile.role;
   const canAccess = hasPaidAccess(tier, isAdmin);
 
   const { data: keys } = canAccess
     ? await admin
         .from("api_keys")
         .select("id, name, key_prefix")
-        .eq("user_id", user.id)
+        .eq("user_id", profile.id)
         .eq("is_active", true)
         .order("created_at", { ascending: false })
     : { data: [] };
