@@ -116,10 +116,13 @@ export default function SkillsPage() {
               <span className="text-xs font-medium text-cannavec-600 tracking-wide">CANNAVEC SKILLS</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-display text-cannavec-900 mb-4">
-              Purpose-built tools for the Cannabis Knowledge Base
+              Skills — the easy way to use the Cannabis Knowledge Base
             </h1>
-            <p className="text-lg text-warm-500 mb-8">
-              Skills are specialist tools that go beyond search — each one is designed for a specific clinical, regulatory, or research workflow. MCP-eligible Skills can be used directly from Claude Desktop, Cursor, and other AI tools.
+            <p className="text-lg text-warm-500 mb-4">
+              Skills are purpose-built interfaces that make the Cannabis Knowledge Base quick and simple to use. Drop-downs, checkboxes, and structured inputs — no prompt engineering needed.
+            </p>
+            <p className="text-sm text-warm-400 mb-8">
+              Free accounts can use Skills on cannavec.ai. With API and MCP access you can extend these Skills into your own AI tools, or build your own interfaces on top of the same knowledge base.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/auth/signup" className="cannavec-btn-primary inline-flex items-center gap-2">
@@ -193,9 +196,12 @@ export default function SkillsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
             <span className="text-[10px] font-mono bg-cannavec-50 text-cannavec-600 px-2 py-0.5 rounded">MCP</span>
-            <h2 className="font-display text-2xl text-cannavec-900 mt-3 mb-3">Use Skills from your AI tools</h2>
-            <p className="text-warm-500 text-sm mb-6">
-              MCP-eligible Skills connect directly to Claude Desktop, Cursor, and any MCP-compatible tool — bringing the Cannabis Knowledge Base into your existing workflow without switching tabs.
+            <h2 className="font-display text-2xl text-cannavec-900 mt-3 mb-3">Extend Skills into your own tools</h2>
+            <p className="text-warm-500 text-sm mb-3">
+              With API and MCP access (from £50/month), every MCP-eligible Skill can be called programmatically — from Claude Desktop, Cursor, or any MCP-compatible tool. Build your own interfaces on top of the same knowledge base.
+            </p>
+            <p className="text-warm-400 text-xs mb-6">
+              The web interface on cannavec.ai gives you the richest experience — structured inputs, visual results, and guided workflows. The API and MCP versions provide the same knowledge, ready for integration.
             </p>
             <Link href="/dashboard/mcp-setup" className="cannavec-btn-secondary inline-flex items-center gap-2">
               MCP Setup guide <ArrowRight className="w-4 h-4" />
