@@ -311,7 +311,7 @@ ${context || "No specific knowledge base entries were retrieved for this route. 
         model: anthropic("claude-sonnet-4-6"),
         system: systemPrompt,
         messages: [{ role: "user", content: userMessage }],
-        maxTokens: 4000,
+        maxOutputTokens: 4000,
         temperature: 0.1,
       });
       claudeResponse = text;
