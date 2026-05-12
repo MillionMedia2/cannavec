@@ -169,6 +169,32 @@ Full integration, custom interfaces, white-labelling, co-branding, named account
 
 ---
 
+## CRITICAL — Vercel Deployment & TypeScript Build Rules (added 2026-05-11)
+
+**Production deploys to Vercel. Every push to `main` triggers a Vercel build.** The Vercel build runs `next build` which includes a strict TypeScript type check. Local `npm run dev` does NOT catch type errors at build time. Code that works locally can fail in production.
+
+**Before committing any code that touches API routes, components, or lib files:**
+
+```bash
+cd /Users/neilcartwright/test/Claude/scripts/cannavec
+npx tsc --noEmit
+```
+
+This runs the TypeScript compiler without emitting files. It will catch the same errors Vercel catches. Fix all errors before committing.
+
+**Known Vercel AI SDK version constraint:** This project uses a version of the Vercel AI SDK (`ai` package) where:
+- `generateText()` uses `maxOutputTokens` NOT `maxTokens` — `maxTokens` causes a type error
+- `streamText()` uses `maxOutputTokens` NOT `maxTokens`
+- Always use `maxOutputTokens` for token limits in this codebase
+
+**Workflow for any Cannavec code change:**
+1. Make the change
+2. Run `npx tsc --noEmit` — fix any errors
+3. Run `npm run dev` locally and test in browser
+4. Commit and push to `main`
+
+---
+
 ## CRITICAL — Skills Access Rule (added 2026-05-11)
 
 **Skills are ONLY functional behind authentication, at `/dashboard/skills/[skill-name]`.**
@@ -337,7 +363,8 @@ npm run dev
 | 2026-03-05 | Event badge updated: Cannabis Europa Paris → ICBC Berlin April 2026. Enterprise pricing: £10,000 → "Contact Us" (all pages). Demo wired to real Pinecone queries. Client-side rate limiting (5/day) implemented. `.env.local` created from master. Product Lookup Skill built: new API route (`/api/v1/product-lookup`), component, page at `/skills/product-lookup`. Nav updated with Skills link. Tiers updated to give all tiers access to `cannabis_products`. |
 | 2026-05-02 | Added CDAL Pipeline section explaining the KB→CDAL→Pinecone→API chain and why KB authoring quality directly determines Cannavec API response quality. |
 | 2026-05-11 | TS-3 complete. Built Cannabis Travel Planner Skill: `lib/travel-risk.ts` (transit risk table + route assessment logic, 60+ countries, 14 high-risk hubs), `app/api/v1/travel/route.ts` (API stub — TS-4 will wire real Pinecone retrieval), `components/travel-planner-section.tsx` (four-question form with progressive transit hub disclosure, route assessment, six-section output rendering), `app/skills/travel/page.tsx` (full page route). Travel Planner card added to skills index. |
-| 2026-05-11 | TS-4 complete. Replaced stub with real Pinecone 5-query retrieval chain + Claude synthesis. `app/api/v1/travel/route.ts` now: runs 5 parallel Pinecone queries filtered by jurisdiction (origin outbound, destination inbound, Schengen mechanism, global transit warnings, travel documentation); merges and deduplicates hits; synthesises with `claude-sonnet-4-6` using the Travel Skill system prompt; returns structured JSON sections. Key fix: increased `maxTokens` to 4000 (2000 was truncating mid-JSON). Verified: UK→Germany (amber, real KB content), UK→Australia via DXB (transit warning fires), UK→US (red, do-not-carry). Next: TS-5 — PDF download. |
+| 2026-05-11 | TS-4 complete. Replaced stub with real Pinecone 5-query retrieval chain + Claude synthesis. `app/api/v1/travel/route.ts` now: runs 5 parallel Pinecone queries filtered by jurisdiction; merges and deduplicates hits; synthesises with `claude-sonnet-4-6` using the Travel Skill system prompt; returns structured JSON sections. Uses `maxOutputTokens: 4000`. Verified: UK→Germany (amber, real KB content), UK→Australia via DXB (transit warning fires), UK→US (red, do-not-carry). |
+| 2026-05-11 | Vercel build fix: `maxTokens` → `maxOutputTokens` in `app/api/v1/travel/route.ts`. Vercel AI SDK in this project uses `maxOutputTokens` not `maxTokens` — documented in CANNAVEC_CONTEXT.md CRITICAL section. Rule added: run `npx tsc --noEmit` before every commit. |
 | 2026-05-11 | CRITICAL FIX: Both `app/skills/travel/page.tsx` and `app/skills/product-lookup/page.tsx` were rendering the full functional tool publicly (no auth required). Reverted both to teaser/marketing pages with sign-up gate. Rule documented in CANNAVEC_CONTEXT.md under CRITICAL — Skills Access Rule. Skills are ONLY functional at `/dashboard/skills/[skill-name]`. Public `/skills/[skill-name]` pages are marketing only. |
 | 2026-05-11 | Follow-up chat added to Travel Planner. New API route `app/api/v1/travel/chat/route.ts` handles streaming follow-up with travel context. New component `components/travel-followup-chat.tsx` renders a fixed-height (280px/480px expandable) chat area at the bottom of results. Messages stay in a contained scroll area — no page jank. Disclaimer text updated to Cannavec-specific wording. |
 
