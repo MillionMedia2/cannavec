@@ -48,7 +48,7 @@ export default async function McpSetupPage() {
                   MCP Setup
                 </h1>
                 <p className="mt-1 text-sm text-gray-500">
-                  Connect Claude Desktop to the Cannavec Cannabis Knowledge Base.
+                  Connect Claude Desktop or Claude Code to the Cannavec Cannabis Knowledge Base.
                 </p>
               </div>
               <MpcSetupClient keys={keys ?? []} />

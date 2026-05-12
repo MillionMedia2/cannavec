@@ -1,41 +1,41 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Package, Leaf, Droplets, Pill, ArrowRight, Zap, Lock } from "lucide-react";
+import { Plane, ArrowRight, Zap, MapPin, ShieldCheck, FileText, Lock } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Product Lookup — Cannavec Skills",
+  title: "Cannabis Travel Planner — Cannavec Skills",
   description:
-    "Search the UK/EU cannabis products database by condition. Evidence-based product recommendations with terpene matching and clinical reasoning.",
+    "Can you travel with your prescribed cannabis? Find out in seconds — documents, step-by-step guidance, and transit warnings for medical cannabis patients.",
 };
 
 const FEATURES = [
   {
-    icon: Package,
-    title: "800+ UK/EU products",
+    icon: MapPin,
+    title: "Transit hub detection",
     description:
-      "The full regulated medical cannabis product database — flower, oil, capsules, and cartridges. Updated regularly.",
+      "Flying via Dubai, Doha, or Singapore? We flag it automatically and tell you exactly what that means for your trip.",
   },
   {
-    icon: Leaf,
-    title: "Evidence-matched terpenes",
+    icon: ShieldCheck,
+    title: "Document checklist",
     description:
-      "Cross-references the cannabis knowledge base to identify terpene profiles clinically relevant to your condition.",
+      "Country-specific documentation requirements — prescriptions, travel letters, permits — and how to get them in time.",
   },
   {
-    icon: Droplets,
-    title: "Full cannabinoid profiles",
+    icon: FileText,
+    title: "Download your guide",
     description:
-      "THC/CBD content, potency ratings, strain names, form-factor details, and pricing for every product returned.",
+      "Save your personalised travel guide as a PDF to take with you, share with your clinic, or hand to a border officer.",
   },
   {
-    icon: Pill,
-    title: "Clinical reasoning",
+    icon: Plane,
+    title: "Covers 60+ countries",
     description:
-      "Evidence summaries explain why products are recommended — grounded in the CKF knowledge base, not guesswork.",
+      "UK, Germany, Australia, Canada, and Schengen countries fully covered. High-risk destination and transit warnings for all major routes.",
   },
 ];
 
-export default function ProductLookupPage() {
+export default function TravelSkillPage() {
   return (
     <>
       {/* Hero */}
@@ -54,21 +54,21 @@ export default function ProductLookupPage() {
               </Link>
               <span className="text-xs text-warm-300">/</span>
               <span className="text-xs font-medium text-cannavec-500">
-                Product Lookup
+                Cannabis Travel Planner
               </span>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display text-cannavec-900 mb-4">
-              Find the right product for any condition.
+              Can I travel with my cannabis?
             </h1>
             <p className="text-lg text-warm-500 mb-4 max-w-2xl">
-              Product Lookup cross-references the clinical evidence base with
-              the UK/EU cannabis products database. Enter a condition — get
-              evidence-matched products with full cannabinoid profiles and
-              clinical reasoning.
+              The Cannabis Travel Planner tells medical cannabis patients whether
+              they can travel with their prescribed medicine — and exactly what
+              they need to do. Two questions, one clear answer.
             </p>
             <p className="text-sm text-warm-400 mb-8">
-              A Cannavec Skill — purpose-built to make the Cannabis Knowledge Base quick and easy to use.
-              No prompt engineering. Just select and search.
+              Covers transit hub risks, country-specific documentation
+              requirements, and step-by-step guidance — all sourced from the
+              Cannabis Knowledge Foundation regulatory database.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
@@ -96,7 +96,7 @@ export default function ProductLookupPage() {
               Free to use — sign up to access
             </h2>
             <p className="text-warm-500 text-sm mb-6 leading-relaxed">
-              Product Lookup is available to all registered Cannavec users at no charge.
+              The Cannabis Travel Planner is available to all registered Cannavec users at no charge.
               Create a free account to use it now.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">

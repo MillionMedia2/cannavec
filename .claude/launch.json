@@ -5,6 +5,7 @@
       "name": "cannavec",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
+      "cwd": "/Users/neilcartwright/test/Claude/scripts/cannavec",
       "port": 3000
     }
   ]

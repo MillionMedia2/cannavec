@@ -169,6 +169,28 @@ Full integration, custom interfaces, white-labelling, co-branding, named account
 
 ---
 
+## CRITICAL — Skills Access Rule (added 2026-05-11)
+
+**Skills are ONLY functional behind authentication, at `/dashboard/skills/[skill-name]`.**
+
+The public-facing `/skills/` pages are MARKETING PAGES ONLY:
+- `/skills` — lists all Skills with descriptions, links to individual teaser pages
+- `/skills/[skill-name]` — teaser page: hero, feature list, sign-up gate. NO functional tool. NO API calls. NO form inputs that do anything.
+
+The functional tool ONLY lives at:
+- `/dashboard/skills/[skill-name]` — auth-gated, full tool
+
+When building any new Skill:
+1. Build the functional component (e.g. `components/my-skill-section.tsx`)
+2. Add it to `/dashboard/skills/[skill-name]/page.tsx` ONLY
+3. Create `/skills/[skill-name]/page.tsx` as a teaser — hero + features + Lock icon + sign-up CTA. Do NOT import or render the functional component here.
+4. Add the Skill card to `/skills/page.tsx` with `href: "/skills/[skill-name]"` (teaser)
+5. Add the Skill card to `/dashboard/skills/page.tsx` with `href: "/dashboard/skills/[skill-name]"` (functional)
+
+Violating this rule means users get the tool for free without signing up, destroying the conversion funnel.
+
+---
+
 ## Codebase Structure
 
 ```
@@ -314,6 +336,10 @@ npm run dev
 | 2026-02-18 | Initial build. Demo section example buttons bug fixed. Hardcoded record counts removed across site. |
 | 2026-03-05 | Event badge updated: Cannabis Europa Paris → ICBC Berlin April 2026. Enterprise pricing: £10,000 → "Contact Us" (all pages). Demo wired to real Pinecone queries. Client-side rate limiting (5/day) implemented. `.env.local` created from master. Product Lookup Skill built: new API route (`/api/v1/product-lookup`), component, page at `/skills/product-lookup`. Nav updated with Skills link. Tiers updated to give all tiers access to `cannabis_products`. |
 | 2026-05-02 | Added CDAL Pipeline section explaining the KB→CDAL→Pinecone→API chain and why KB authoring quality directly determines Cannavec API response quality. |
+| 2026-05-11 | TS-3 complete. Built Cannabis Travel Planner Skill: `lib/travel-risk.ts` (transit risk table + route assessment logic, 60+ countries, 14 high-risk hubs), `app/api/v1/travel/route.ts` (API stub — TS-4 will wire real Pinecone retrieval), `components/travel-planner-section.tsx` (four-question form with progressive transit hub disclosure, route assessment, six-section output rendering), `app/skills/travel/page.tsx` (full page route). Travel Planner card added to skills index. |
+| 2026-05-11 | TS-4 complete. Replaced stub with real Pinecone 5-query retrieval chain + Claude synthesis. `app/api/v1/travel/route.ts` now: runs 5 parallel Pinecone queries filtered by jurisdiction (origin outbound, destination inbound, Schengen mechanism, global transit warnings, travel documentation); merges and deduplicates hits; synthesises with `claude-sonnet-4-6` using the Travel Skill system prompt; returns structured JSON sections. Key fix: increased `maxTokens` to 4000 (2000 was truncating mid-JSON). Verified: UK→Germany (amber, real KB content), UK→Australia via DXB (transit warning fires), UK→US (red, do-not-carry). Next: TS-5 — PDF download. |
+| 2026-05-11 | CRITICAL FIX: Both `app/skills/travel/page.tsx` and `app/skills/product-lookup/page.tsx` were rendering the full functional tool publicly (no auth required). Reverted both to teaser/marketing pages with sign-up gate. Rule documented in CANNAVEC_CONTEXT.md under CRITICAL — Skills Access Rule. Skills are ONLY functional at `/dashboard/skills/[skill-name]`. Public `/skills/[skill-name]` pages are marketing only. |
+| 2026-05-11 | Follow-up chat added to Travel Planner. New API route `app/api/v1/travel/chat/route.ts` handles streaming follow-up with travel context. New component `components/travel-followup-chat.tsx` renders a fixed-height (280px/480px expandable) chat area at the bottom of results. Messages stay in a contained scroll area — no page jank. Disclaimer text updated to Cannavec-specific wording. |
 
 ---
 

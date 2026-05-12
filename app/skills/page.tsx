@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Search, Scale, FileCheck, GitCompare, Filter,
-  FlaskConical, Package, Stethoscope, Pill, ArrowRight, Zap,
+  FlaskConical, Package, Stethoscope, Pill, ArrowRight, Zap, Plane,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -30,6 +30,16 @@ const SKILLS = [
     tierClass: "bg-warm-100 text-warm-600",
     status: "live" as const,
     href: null,
+    mcpEligible: true,
+  },
+  {
+    icon: Plane,
+    name: "Cannabis Travel Planner",
+    description: "Can you travel with your prescribed cannabis? Enter your origin and destination — get a route assessment, transit hub warnings, required documents, and a step-by-step checklist.",
+    tier: "Free",
+    tierClass: "bg-warm-100 text-warm-600",
+    status: "live" as const,
+    href: "/skills/travel",
     mcpEligible: true,
   },
   {
@@ -122,7 +132,7 @@ export default function SkillsPage() {
               Skills are purpose-built interfaces that make the Cannabis Knowledge Base quick and simple to use. Drop-downs, checkboxes, and structured inputs — no prompt engineering needed.
             </p>
             <p className="text-sm text-warm-400 mb-8">
-              Free accounts can use Skills on cannavec.ai. With API and MCP access you can extend these Skills into your own AI tools, or build your own interfaces on top of the same knowledge base.
+              Skills are available to all registered Cannavec users at no charge. With API and MCP access you can extend these Skills into your own AI tools, or build your own interfaces on top of the same knowledge base.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/auth/signup" className="cannavec-btn-primary inline-flex items-center gap-2">

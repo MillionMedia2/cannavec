@@ -1,6 +1,6 @@
 import { getAuthProfile } from "@/lib/dev-auth";
 import { DashboardSidebar } from "@/components/dashboard-sidebar";
-import { Menu, Search, FileCheck, Scale, GitCompare, FlaskConical, Filter, Package, Stethoscope, Pill, Zap, ArrowRight } from "lucide-react";
+import { Menu, Search, FileCheck, Scale, GitCompare, FlaskConical, Filter, Package, Stethoscope, Pill, Zap, ArrowRight, Plane } from "lucide-react";
 import Link from "next/link";
 
 interface SkillTile {
@@ -61,6 +61,15 @@ const SKILLS: SkillTile[] = [
     tier: "Advocacy",
     status: "coming_soon",
     mcpEligible: false,
+  },
+  {
+    icon: Plane,
+    name: "Cannabis Travel Planner",
+    description: "Can you travel with your prescribed cannabis? Enter your origin and destination — get a route assessment, transit hub warnings, required documents, and a step-by-step checklist.",
+    tier: "Free",
+    status: "live",
+    href: "/dashboard/skills/travel",
+    mcpEligible: true,
   },
   {
     icon: Package,
