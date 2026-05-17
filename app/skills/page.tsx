@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Search, Scale, FileCheck, GitCompare, Filter,
-  FlaskConical, Package, Stethoscope, Pill, ArrowRight, Zap, Plane,
+  FlaskConical, Package, Stethoscope, Pill, ArrowRight, Zap, Plane, ClipboardCheck,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -31,6 +31,16 @@ const SKILLS = [
     status: "live" as const,
     href: null,
     mcpEligible: true,
+  },
+  {
+    icon: ClipboardCheck,
+    name: "Free Eligibility Check",
+    description: "A patient-facing triage workflow for UK medical cannabis. Eight steps, a clear verdict (green / amber / red), and a structured intake straight to the clinic. Embeddable via iframe.",
+    tier: "Free",
+    tierClass: "bg-warm-100 text-warm-600",
+    status: "live" as const,
+    href: "/skills/triage",
+    mcpEligible: false,
   },
   {
     icon: Plane,

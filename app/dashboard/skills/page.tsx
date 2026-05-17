@@ -1,6 +1,6 @@
 import { getAuthProfile } from "@/lib/dev-auth";
 import { DashboardSidebar } from "@/components/dashboard-sidebar";
-import { Menu, Search, FileCheck, Scale, GitCompare, FlaskConical, Filter, Package, Stethoscope, Pill, Zap, ArrowRight, Plane } from "lucide-react";
+import { Menu, Search, FileCheck, Scale, GitCompare, FlaskConical, Filter, Package, Stethoscope, Pill, Zap, ArrowRight, Plane, ClipboardCheck } from "lucide-react";
 import Link from "next/link";
 
 interface SkillTile {
@@ -60,6 +60,15 @@ const SKILLS: SkillTile[] = [
     description: "Match cannabis cultivars to a patient's symptom profile, tolerance level, and terpene preferences. Interactive wizard with ranked suggestions.",
     tier: "Advocacy",
     status: "coming_soon",
+    mcpEligible: false,
+  },
+  {
+    icon: ClipboardCheck,
+    name: "Free Eligibility Check",
+    description: "A patient-facing triage workflow for UK medical cannabis. Eight steps, a clear verdict (green / amber / red), and a structured intake straight to the clinic via Airtable.",
+    tier: "Free",
+    status: "live",
+    href: "/dashboard/skills/triage",
     mcpEligible: false,
   },
   {

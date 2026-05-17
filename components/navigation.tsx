@@ -20,7 +20,7 @@ export function Navigation() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const isAppRoute =
-    pathname?.startsWith("/dashboard") || pathname?.startsWith("/admin");
+    pathname?.startsWith("/dashboard") || pathname?.startsWith("/admin") || pathname?.startsWith("/triage");
 
   useEffect(() => {
     if (isAppRoute) return;

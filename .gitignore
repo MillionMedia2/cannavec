@@ -26,6 +26,10 @@ yarn-error.log*
 .env*.local
 .env
 
+# service account credentials (Triage Agent — see knowledge/cannabis/projects/Triage Agent/architecture.md)
+.gcp/
+*.json.gcp
+
 # vercel
 .vercel
 
